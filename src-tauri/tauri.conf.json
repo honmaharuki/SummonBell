@@ -36,10 +36,13 @@
     "windows": [
       {
         "fullscreen": false,
-        "resizable": true,
+        "resizable": false,
         "title": "summonBell",
-        "width": 800,
+        "x": 1000,
+        "y": 200,
+        "width": 500,
         "height": 600
+
       }
     ]
   }
