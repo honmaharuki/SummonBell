@@ -39,9 +39,11 @@
         "resizable": false,
         "title": "summonBell",
         "x": 1000,
-        "y": 200,
+        "y": 150,
         "width": 500,
-        "height": 600
+        "height": 600,
+        "transparent":true,
+        "decorations": false
 
       }
     ]

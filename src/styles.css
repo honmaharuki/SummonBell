@@ -1,11 +1,12 @@
-:root {
+:root { /* :rootはhtml要素を指す */
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 400;
 
-  color: #0f0f0f;
-  background-color: #f6f6f6;
+  color: #0f0f0f; /* 文字色 */
+  /* background-color: #f6f6f6; */
+  background-color: hsla(120, 100%, 50%, 0.2);  /* 緑色の背景を20%の透明度で表示 */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
