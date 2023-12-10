@@ -4,6 +4,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:summon_bell/models/top_model.dart';
 
+import 'package:summon_bell/screens/char_add.dart';
+import 'package:summon_bell/screens/char_select.dart';
+import 'package:summon_bell/screens/general_settings.dart';
+import 'package:summon_bell/screens/open_ai_settings.dart';
+
 // TopModel の Provider
 final topModelProvider = Provider((ref) => TopModel(aId: 1));
 
@@ -14,8 +19,23 @@ class TopWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final _model = ref.watch(topModelProvider);
 
+    Widget _buildListTile(String title, Widget Function() buildRoute) {
+      return ListTile(
+        title: Text(title),
+        onTap: () {
+          Navigator.pop(context);
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => buildRoute()));
+        },
+      );
+    }
+
     return Scaffold(
       backgroundColor: Color(0xFFEAEDF0),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text("title"),
+      ),
       body: SafeArea(
         top: true,
         child: Column(
@@ -70,6 +90,16 @@ class TopWidget extends HookConsumerWidget {
               ],
             ),
             // 他のウィジェット部分は省略
+          ],
+        ),
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: <Widget>[
+            _buildListTile('Char Add', () => CharAddWidget()),
+            _buildListTile('Char Select', () => CharSelectWidget()),
+            _buildListTile('General Settings', () => GeneralSettingsWidget()),
+            _buildListTile('OpenAI Settings', () => OpenAISettingsWidget()),
           ],
         ),
       ),
