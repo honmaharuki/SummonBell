@@ -34,6 +34,10 @@ dependencies: # あなたのアプリケーションに必要なパッケージ�
 
   # @riverpod アノテーションを使用するために必要
   riverpod_annotation: ^2.3.3
+  # flutter_chat_ui チャットUIを使用します。
+  flutter_chat_ui: ^1.6.10
+  flutter_chat_types: ^3.6.2
+  uuid: ^4.2.1
 
 
 dev_dependencies: 
