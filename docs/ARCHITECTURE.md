@@ -17,6 +17,7 @@ summon_bell/
 │   ├── models/         # データモデル
 │   ├── services/       # サービスクラスやAPIの呼び出し
 │   ├── state/          # 状態管理に関するクラス
+│   ├── database/       # データベースの初期化やマイグレーション
 │   ├── config/         # アプリの設定や環境変数
 │   ├── themes/         # アプリのテーマやスタイル
 │   └── routes.dart     # ルーティングの定義

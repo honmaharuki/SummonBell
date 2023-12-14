@@ -6,6 +6,7 @@ import 'package:summon_bell/components/base_app_bar.dart';
 import 'package:summon_bell/components/base_chat.dart';
 import 'package:summon_bell/components/base_drawer.dart';
 import 'package:summon_bell/components/base_image.dart';
+import 'package:summon_bell/database/database.dart';
 
 import 'package:summon_bell/models/top_model.dart';
 
@@ -42,6 +43,12 @@ class TopWidget extends HookConsumerWidget {
               children: [
                 BaseImage(),
                 ChatSection(messages: messages),
+                ElevatedButton(
+                  onPressed: () {
+                    maindb(); // ボタンが押されたときに実行するメソッド
+                  },
+                  child: Text('DB Test Start'),
+                ),
               ],
             ),
           ),
@@ -49,4 +56,18 @@ class TopWidget extends HookConsumerWidget {
       ),
     );
   }
+}
+
+void maindb() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final database = AppDatabase();
+
+  await database.into(database.todoItems).insert(TodoItemsCompanion.insert(
+        title: 'todo: finish drift setup',
+        content: 'We can now write queries and define our own tables.',
+      ));
+  List<TodoItem> allItems = await database.select(database.todoItems).get();
+
+  print('items in database: $allItems');
 }
