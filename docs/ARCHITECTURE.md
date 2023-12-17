@@ -18,6 +18,12 @@ summon_bell/
 │   ├── services/       # サービスクラスやAPIの呼び出し
 │   ├── state/          # 状態管理に関するクラス
 │   ├── database/       # データベースの初期化やマイグレーション
+│   │   ├── tables/    # テーブル定義
+│   │   ├── migrations/  # マイグレーションファイル
+│   │   ├── database.dart  # データベースの初期化
+│   │   ├── database_provider.dart  # データベースのプロバイダー
+│   │   ├── dao/       # データアクセスオブジェクト
+│   │   └── queries/   # 複雑なクエリ
 │   ├── config/         # アプリの設定や環境変数
 │   ├── themes/         # アプリのテーマやスタイル
 │   └── routes.dart     # ルーティングの定義
