@@ -23,7 +23,8 @@ summon_bell/
 │   │   ├── database.dart  # データベースの初期化
 │   │   ├── database_provider.dart  # データベースのプロバイダー
 │   │   ├── dao/       # データアクセスオブジェクト
-│   │   └── queries/   # 複雑なクエリ
+│   │   ├── complex_queries/  # 複雑なクエリ
+│   │   └── ...
 │   ├── config/         # アプリの設定や環境変数
 │   ├── themes/         # アプリのテーマやスタイル
 │   └── routes.dart     # ルーティングの定義
