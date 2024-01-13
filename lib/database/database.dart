@@ -52,9 +52,11 @@ LazyDatabase _openConnection() {
   // データベース接続の設定
   // LazyDatabaseユーティリティを使用してファイルの正しい場所を非同期で見つける。
   return LazyDatabase(() async {
-    // アプリのドキュメントフォルダにデータベースファイル（db.sqlite）を置く
-    final dbFolder = await getApplicationDocumentsDirectory();
-    String dbPath = p.join(dbFolder.path, 'db.sqlite');
+    /***  アプリのドキュメントフォルダにデータベースファイル（db.sqlite）を置く場合
+      final dbFolder = await getApplicationDocumentsDirectory();
+      String dbPath = p.join(dbFolder.path, 'db.sqlite');
+    ***/
+    String dbPath = 'databaseData/db.sqlite';
     print('db location : ' + dbPath);
     final file = File(dbPath);
 
