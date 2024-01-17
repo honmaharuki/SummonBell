@@ -28,6 +28,9 @@ summon_bell/
 │   ├── config/         # アプリの設定や環境変数
 │   ├── themes/         # アプリのテーマやスタイル
 │   └── routes.dart     # ルーティングの定義
+├── bot/
+│   ├── bot_main.dart   # Botのエントリーポイント
+│   ├── services/       # BotのサービスクラスやAPIの呼び出し
 ├── test/               # テストコード
 │   └── ...
 ├── pubspec.yaml        # プロジェクトの依存関係や設定

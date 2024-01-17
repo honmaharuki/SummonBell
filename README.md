@@ -1,8 +1,5 @@
 # summon_bell
 
-A new Flutter project.
-# summon_bell
-
 ## riverpodの依存関係を記載したgraph.mdを生成する方法
 ```
 dart pub global run riverpod_graph:riverpod_graph > ./docs/graph.md

@@ -132,8 +132,9 @@ LazyDatabase _openConnection() {
 
 ```
 
-データベースの生成は、main.dartのmain関数の中で、runAppの前で行います。
-
+データベースの生成は、main.dartのmain関数の中で、runAppの前で行います。  
+（リバーポッド使えばその限りではないです。  
+https://github.com/simolus3/drift/blob/develop/examples/app/lib/database/database.dart）
 main.dart
 ``` dart
 import 'package:drift_sample2/src/drift/todos.dart';  //追加
