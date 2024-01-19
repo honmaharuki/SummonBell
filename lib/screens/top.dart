@@ -6,6 +6,7 @@ import 'package:summon_bell/components/base_app_bar.dart';
 import 'package:summon_bell/components/base_chat.dart';
 import 'package:summon_bell/components/base_drawer.dart';
 import 'package:summon_bell/components/base_image.dart';
+import 'package:summon_bell/database/dao/permissions_dao.dart';
 import 'package:summon_bell/database/database.dart';
 
 import 'package:summon_bell/models/top_model.dart';
@@ -62,16 +63,9 @@ class TopWidget extends HookConsumerWidget {
   Future<void> maindb(AppDatabase database) async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    await database
-        .into(database.permissions)
-        .insert(PermissionsCompanion.insert(
-          updatedAt: 'test',
-          roles: 'test',
-          level: 'test',
-        ));
-    List<Permission> allItems =
-        await database.select(database.permissions).get();
+    await database.permissionDao.insertPermission();
 
-    print('items in database: $allItems');
+    final allPermissions = await database.permissionDao.getAllPermissions();
+    print('allPermissions: $allPermissions');
   }
 }

@@ -1,21 +1,16 @@
-import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class TopModel extends ChangeNotifier {
-  final int aId;
-  late TextEditingController textController;
-  late FocusNode textFieldFocusNode;
+part 'top_model.g.dart';
+part 'top_model.freezed.dart';
 
-  TopModel({required this.aId}) {
-    textController = TextEditingController();
-    textFieldFocusNode = FocusNode();
-  }
+@freezed
+class TopModel with _$TopModel {
+  const TopModel._();
+  const factory TopModel({
+    required int aId,
+  }) = _TopModel;
 
-  @override
-  void dispose() {
-    textController.dispose();
-    textFieldFocusNode.dispose();
-    super.dispose();
-  }
-
+  factory TopModel.fromJson(Map<String, dynamic> json) =>
+      _$TopModelFromJson(json);
   // 他のメソッド
 }

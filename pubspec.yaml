@@ -46,6 +46,8 @@ dependencies: # あなたのアプリケーションに必要なパッケージ�
   path_provider: ^2.0.0
   path: ^1.8.3
   sqlite3: ^2.1.0
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
 
 
 
@@ -68,6 +70,8 @@ dev_dependencies:
   riverpod_generator: ^2.3.9
 
   drift_dev: ^2.14.0
+  json_serializable: ^6.7.1
+  freezed: ^2.4.6
 
 # このファイルの一般的なDart部分に関する情報については、以下のページを参照してください：https://dart.dev/tools/pub/pubspec
 

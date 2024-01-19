@@ -128,3 +128,36 @@ class ChatSection extends StatelessWidget {
   }
 }
 
+
+# その他
+## todo tree
+vscの拡張機能として、todo treeを入れています。  
+設定しているの下記です。  
+
+"todo-tree.general.tags": [
+  "BUG",
+  "HACK",
+  "FIXME",
+  "TODO",
+  "XXX",
+  "[ ]",
+  "[x]",
+  "NOTE",
+  "MEMO",
+  "REVIEW",
+  "OPTIMIZE",
+  "WARNING"
+]
+  
+"BUG" , バグ  
+"HACK" , あまりきれいじゃないコード。リファクタリングが必要。  
+"FIXME" , 既知の不具合があるコード。修正が必要。  
+"TODO" , あとで追加、修正するべき機能がある。  
+"XXX" , 危険！動くけどなぜうごくかわからない。  
+"[ ]" , 未タスク  
+"[x]" , 済タスク  
+"NOTE" , なぜ、こうなったという情報を残す。  
+"MEMO" , メモ  
+"REVIEW" , 意図した通りに動くか、見直す必要がある。  
+"OPTIMIZE" , 無駄が多く、ボトルネックになっている。  
+"WARNING" , 注意が必要。  

@@ -46,6 +46,7 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1; // スキーマバージョン
+  //NOTE Future<List<Room>> getAllUsers() => select(rooms).get(); Daoを使わずにdatabase.dartに直接記載も可能 https://drift.simonbinder.eu/docs/dart-api/select/#simple-selects
 }
 
 LazyDatabase _openConnection() {
