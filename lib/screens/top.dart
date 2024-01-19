@@ -9,6 +9,7 @@ import 'package:summon_bell/components/base_image.dart';
 import 'package:summon_bell/database/database.dart';
 
 import 'package:summon_bell/models/top_model.dart';
+import 'package:summon_bell/state/database_provider.dart';
 
 // TopModel's Provider
 final topModelProvider = Provider(
@@ -20,18 +21,19 @@ class TopWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _model = ref.watch(topModelProvider);
+    final database = ref.watch(databaseProvider);
     final messages = useState<List<types.Message>>([]);
 
     return Scaffold(
       backgroundColor: const Color(0xFFEAEDF0),
       appBar: BaseAppBar(),
-      body: _buildBody(context, messages),
+      body: _buildBody(context, messages, database),
       drawer: BaseDrawer(),
     );
   }
 
-  SafeArea _buildBody(
-      BuildContext context, ValueNotifier<List<types.Message>> messages) {
+  SafeArea _buildBody(BuildContext context,
+      ValueNotifier<List<types.Message>> messages, AppDatabase database) {
     return SafeArea(
       top: true,
       child: SingleChildScrollView(
@@ -45,7 +47,7 @@ class TopWidget extends HookConsumerWidget {
                 ChatSection(messages: messages),
                 ElevatedButton(
                   onPressed: () {
-                    maindb(); // ボタンが押されたときに実行するメソッド
+                    maindb(database); // ボタンが押されたときに実行するメソッド
                   },
                   child: Text('DB Test Start'),
                 ),
@@ -56,19 +58,20 @@ class TopWidget extends HookConsumerWidget {
       ),
     );
   }
-}
 
-void maindb() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  Future<void> maindb(AppDatabase database) async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  final database = AppDatabase();
+    await database
+        .into(database.permissions)
+        .insert(PermissionsCompanion.insert(
+          updatedAt: 'test',
+          roles: 'test',
+          level: 'test',
+        ));
+    List<Permission> allItems =
+        await database.select(database.permissions).get();
 
-  await database.into(database.permissions).insert(PermissionsCompanion.insert(
-        updatedAt: 'test',
-        roles: 'test',
-        level: 'test',
-      ));
-  List<Permission> allItems = await database.select(database.permissions).get();
-
-  print('items in database: $allItems');
+    print('items in database: $allItems');
+  }
 }
