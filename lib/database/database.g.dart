@@ -450,6 +450,296 @@ class AccountsCompanion extends UpdateCompanion<Account> {
   }
 }
 
+class $RoomsTable extends Rooms with TableInfo<$RoomsTable, Room> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $RoomsTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
+  @override
+  late final GeneratedColumn<int> roomId = GeneratedColumn<int>(
+      'room_id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _updatedAtMeta =
+      const VerificationMeta('updatedAt');
+  @override
+  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
+      'updated_at', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _topicMeta = const VerificationMeta('topic');
+  @override
+  late final GeneratedColumn<String> topic = GeneratedColumn<String>(
+      'topic', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+      'name', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _lastMessageMeta =
+      const VerificationMeta('lastMessage');
+  @override
+  late final GeneratedColumn<String> lastMessage = GeneratedColumn<String>(
+      'last_message', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [roomId, updatedAt, topic, name, lastMessage];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'rooms';
+  @override
+  VerificationContext validateIntegrity(Insertable<Room> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('room_id')) {
+      context.handle(_roomIdMeta,
+          roomId.isAcceptableOrUnknown(data['room_id']!, _roomIdMeta));
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(_updatedAtMeta,
+          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
+    } else if (isInserting) {
+      context.missing(_updatedAtMeta);
+    }
+    if (data.containsKey('topic')) {
+      context.handle(
+          _topicMeta, topic.isAcceptableOrUnknown(data['topic']!, _topicMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('last_message')) {
+      context.handle(
+          _lastMessageMeta,
+          lastMessage.isAcceptableOrUnknown(
+              data['last_message']!, _lastMessageMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {roomId};
+  @override
+  Room map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Room(
+      roomId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}room_id'])!,
+      updatedAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}updated_at'])!,
+      topic: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}topic']),
+      name: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
+      lastMessage: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}last_message']),
+    );
+  }
+
+  @override
+  $RoomsTable createAlias(String alias) {
+    return $RoomsTable(attachedDatabase, alias);
+  }
+}
+
+class Room extends DataClass implements Insertable<Room> {
+  final int roomId;
+  final String updatedAt;
+  final String? topic;
+  final String name;
+  final String? lastMessage;
+  const Room(
+      {required this.roomId,
+      required this.updatedAt,
+      this.topic,
+      required this.name,
+      this.lastMessage});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['room_id'] = Variable<int>(roomId);
+    map['updated_at'] = Variable<String>(updatedAt);
+    if (!nullToAbsent || topic != null) {
+      map['topic'] = Variable<String>(topic);
+    }
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || lastMessage != null) {
+      map['last_message'] = Variable<String>(lastMessage);
+    }
+    return map;
+  }
+
+  RoomsCompanion toCompanion(bool nullToAbsent) {
+    return RoomsCompanion(
+      roomId: Value(roomId),
+      updatedAt: Value(updatedAt),
+      topic:
+          topic == null && nullToAbsent ? const Value.absent() : Value(topic),
+      name: Value(name),
+      lastMessage: lastMessage == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lastMessage),
+    );
+  }
+
+  factory Room.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Room(
+      roomId: serializer.fromJson<int>(json['roomId']),
+      updatedAt: serializer.fromJson<String>(json['updatedAt']),
+      topic: serializer.fromJson<String?>(json['topic']),
+      name: serializer.fromJson<String>(json['name']),
+      lastMessage: serializer.fromJson<String?>(json['lastMessage']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'roomId': serializer.toJson<int>(roomId),
+      'updatedAt': serializer.toJson<String>(updatedAt),
+      'topic': serializer.toJson<String?>(topic),
+      'name': serializer.toJson<String>(name),
+      'lastMessage': serializer.toJson<String?>(lastMessage),
+    };
+  }
+
+  Room copyWith(
+          {int? roomId,
+          String? updatedAt,
+          Value<String?> topic = const Value.absent(),
+          String? name,
+          Value<String?> lastMessage = const Value.absent()}) =>
+      Room(
+        roomId: roomId ?? this.roomId,
+        updatedAt: updatedAt ?? this.updatedAt,
+        topic: topic.present ? topic.value : this.topic,
+        name: name ?? this.name,
+        lastMessage: lastMessage.present ? lastMessage.value : this.lastMessage,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Room(')
+          ..write('roomId: $roomId, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('topic: $topic, ')
+          ..write('name: $name, ')
+          ..write('lastMessage: $lastMessage')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(roomId, updatedAt, topic, name, lastMessage);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Room &&
+          other.roomId == this.roomId &&
+          other.updatedAt == this.updatedAt &&
+          other.topic == this.topic &&
+          other.name == this.name &&
+          other.lastMessage == this.lastMessage);
+}
+
+class RoomsCompanion extends UpdateCompanion<Room> {
+  final Value<int> roomId;
+  final Value<String> updatedAt;
+  final Value<String?> topic;
+  final Value<String> name;
+  final Value<String?> lastMessage;
+  const RoomsCompanion({
+    this.roomId = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.topic = const Value.absent(),
+    this.name = const Value.absent(),
+    this.lastMessage = const Value.absent(),
+  });
+  RoomsCompanion.insert({
+    this.roomId = const Value.absent(),
+    required String updatedAt,
+    this.topic = const Value.absent(),
+    required String name,
+    this.lastMessage = const Value.absent(),
+  })  : updatedAt = Value(updatedAt),
+        name = Value(name);
+  static Insertable<Room> custom({
+    Expression<int>? roomId,
+    Expression<String>? updatedAt,
+    Expression<String>? topic,
+    Expression<String>? name,
+    Expression<String>? lastMessage,
+  }) {
+    return RawValuesInsertable({
+      if (roomId != null) 'room_id': roomId,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (topic != null) 'topic': topic,
+      if (name != null) 'name': name,
+      if (lastMessage != null) 'last_message': lastMessage,
+    });
+  }
+
+  RoomsCompanion copyWith(
+      {Value<int>? roomId,
+      Value<String>? updatedAt,
+      Value<String?>? topic,
+      Value<String>? name,
+      Value<String?>? lastMessage}) {
+    return RoomsCompanion(
+      roomId: roomId ?? this.roomId,
+      updatedAt: updatedAt ?? this.updatedAt,
+      topic: topic ?? this.topic,
+      name: name ?? this.name,
+      lastMessage: lastMessage ?? this.lastMessage,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (roomId.present) {
+      map['room_id'] = Variable<int>(roomId.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<String>(updatedAt.value);
+    }
+    if (topic.present) {
+      map['topic'] = Variable<String>(topic.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (lastMessage.present) {
+      map['last_message'] = Variable<String>(lastMessage.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('RoomsCompanion(')
+          ..write('roomId: $roomId, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('topic: $topic, ')
+          ..write('name: $name, ')
+          ..write('lastMessage: $lastMessage')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -471,7 +761,8 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       'room_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
-      $customConstraints: 'REFERENCES rooms(room_id)');
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('REFERENCES rooms (room_id)'));
   static const VerificationMeta _msgMeta = const VerificationMeta('msg');
   @override
   late final GeneratedColumn<String> msg = GeneratedColumn<String>(
@@ -484,13 +775,14 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       'account_id', aliasedName, false,
       type: DriftSqlType.int,
       requiredDuringInsert: true,
-      $customConstraints: 'REFERENCES accounts(account_id)');
+      defaultConstraints: GeneratedColumn.constraintIsAlways(
+          'REFERENCES accounts (account_id)'));
   static const VerificationMeta _updatedAtMeta =
       const VerificationMeta('updatedAt');
   @override
-  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
+  late final GeneratedColumn<int> updatedAt = GeneratedColumn<int>(
       'updated_at', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      type: DriftSqlType.int, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [messageId, roomId, msg, accountId, updatedAt];
@@ -550,7 +842,7 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
       accountId: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}account_id'])!,
       updatedAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}updated_at'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}updated_at'])!,
     );
   }
 
@@ -565,7 +857,7 @@ class Message extends DataClass implements Insertable<Message> {
   final int roomId;
   final String msg;
   final int accountId;
-  final String updatedAt;
+  final int updatedAt;
   const Message(
       {required this.messageId,
       required this.roomId,
@@ -579,7 +871,7 @@ class Message extends DataClass implements Insertable<Message> {
     map['room_id'] = Variable<int>(roomId);
     map['msg'] = Variable<String>(msg);
     map['account_id'] = Variable<int>(accountId);
-    map['updated_at'] = Variable<String>(updatedAt);
+    map['updated_at'] = Variable<int>(updatedAt);
     return map;
   }
 
@@ -601,7 +893,7 @@ class Message extends DataClass implements Insertable<Message> {
       roomId: serializer.fromJson<int>(json['roomId']),
       msg: serializer.fromJson<String>(json['msg']),
       accountId: serializer.fromJson<int>(json['accountId']),
-      updatedAt: serializer.fromJson<String>(json['updatedAt']),
+      updatedAt: serializer.fromJson<int>(json['updatedAt']),
     );
   }
   @override
@@ -612,7 +904,7 @@ class Message extends DataClass implements Insertable<Message> {
       'roomId': serializer.toJson<int>(roomId),
       'msg': serializer.toJson<String>(msg),
       'accountId': serializer.toJson<int>(accountId),
-      'updatedAt': serializer.toJson<String>(updatedAt),
+      'updatedAt': serializer.toJson<int>(updatedAt),
     };
   }
 
@@ -621,7 +913,7 @@ class Message extends DataClass implements Insertable<Message> {
           int? roomId,
           String? msg,
           int? accountId,
-          String? updatedAt}) =>
+          int? updatedAt}) =>
       Message(
         messageId: messageId ?? this.messageId,
         roomId: roomId ?? this.roomId,
@@ -659,7 +951,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
   final Value<int> roomId;
   final Value<String> msg;
   final Value<int> accountId;
-  final Value<String> updatedAt;
+  final Value<int> updatedAt;
   const MessagesCompanion({
     this.messageId = const Value.absent(),
     this.roomId = const Value.absent(),
@@ -672,7 +964,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     required int roomId,
     required String msg,
     required int accountId,
-    required String updatedAt,
+    required int updatedAt,
   })  : roomId = Value(roomId),
         msg = Value(msg),
         accountId = Value(accountId),
@@ -682,7 +974,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
     Expression<int>? roomId,
     Expression<String>? msg,
     Expression<int>? accountId,
-    Expression<String>? updatedAt,
+    Expression<int>? updatedAt,
   }) {
     return RawValuesInsertable({
       if (messageId != null) 'message_id': messageId,
@@ -698,7 +990,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       Value<int>? roomId,
       Value<String>? msg,
       Value<int>? accountId,
-      Value<String>? updatedAt}) {
+      Value<int>? updatedAt}) {
     return MessagesCompanion(
       messageId: messageId ?? this.messageId,
       roomId: roomId ?? this.roomId,
@@ -724,7 +1016,7 @@ class MessagesCompanion extends UpdateCompanion<Message> {
       map['account_id'] = Variable<int>(accountId.value);
     }
     if (updatedAt.present) {
-      map['updated_at'] = Variable<String>(updatedAt.value);
+      map['updated_at'] = Variable<int>(updatedAt.value);
     }
     return map;
   }
@@ -1184,296 +1476,6 @@ class RoomParticipantsCompanion extends UpdateCompanion<RoomParticipant> {
   }
 }
 
-class $RoomsTable extends Rooms with TableInfo<$RoomsTable, Room> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $RoomsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _roomIdMeta = const VerificationMeta('roomId');
-  @override
-  late final GeneratedColumn<int> roomId = GeneratedColumn<int>(
-      'room_id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _updatedAtMeta =
-      const VerificationMeta('updatedAt');
-  @override
-  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
-      'updated_at', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _topicMeta = const VerificationMeta('topic');
-  @override
-  late final GeneratedColumn<String> topic = GeneratedColumn<String>(
-      'topic', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
-  @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _lastMessageMeta =
-      const VerificationMeta('lastMessage');
-  @override
-  late final GeneratedColumn<String> lastMessage = GeneratedColumn<String>(
-      'last_message', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  @override
-  List<GeneratedColumn> get $columns =>
-      [roomId, updatedAt, topic, name, lastMessage];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'rooms';
-  @override
-  VerificationContext validateIntegrity(Insertable<Room> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('room_id')) {
-      context.handle(_roomIdMeta,
-          roomId.isAcceptableOrUnknown(data['room_id']!, _roomIdMeta));
-    }
-    if (data.containsKey('updated_at')) {
-      context.handle(_updatedAtMeta,
-          updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
-    } else if (isInserting) {
-      context.missing(_updatedAtMeta);
-    }
-    if (data.containsKey('topic')) {
-      context.handle(
-          _topicMeta, topic.isAcceptableOrUnknown(data['topic']!, _topicMeta));
-    }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
-    } else if (isInserting) {
-      context.missing(_nameMeta);
-    }
-    if (data.containsKey('last_message')) {
-      context.handle(
-          _lastMessageMeta,
-          lastMessage.isAcceptableOrUnknown(
-              data['last_message']!, _lastMessageMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {roomId};
-  @override
-  Room map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Room(
-      roomId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}room_id'])!,
-      updatedAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}updated_at'])!,
-      topic: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}topic']),
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
-      lastMessage: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}last_message']),
-    );
-  }
-
-  @override
-  $RoomsTable createAlias(String alias) {
-    return $RoomsTable(attachedDatabase, alias);
-  }
-}
-
-class Room extends DataClass implements Insertable<Room> {
-  final int roomId;
-  final String updatedAt;
-  final String? topic;
-  final String name;
-  final String? lastMessage;
-  const Room(
-      {required this.roomId,
-      required this.updatedAt,
-      this.topic,
-      required this.name,
-      this.lastMessage});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['room_id'] = Variable<int>(roomId);
-    map['updated_at'] = Variable<String>(updatedAt);
-    if (!nullToAbsent || topic != null) {
-      map['topic'] = Variable<String>(topic);
-    }
-    map['name'] = Variable<String>(name);
-    if (!nullToAbsent || lastMessage != null) {
-      map['last_message'] = Variable<String>(lastMessage);
-    }
-    return map;
-  }
-
-  RoomsCompanion toCompanion(bool nullToAbsent) {
-    return RoomsCompanion(
-      roomId: Value(roomId),
-      updatedAt: Value(updatedAt),
-      topic:
-          topic == null && nullToAbsent ? const Value.absent() : Value(topic),
-      name: Value(name),
-      lastMessage: lastMessage == null && nullToAbsent
-          ? const Value.absent()
-          : Value(lastMessage),
-    );
-  }
-
-  factory Room.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Room(
-      roomId: serializer.fromJson<int>(json['roomId']),
-      updatedAt: serializer.fromJson<String>(json['updatedAt']),
-      topic: serializer.fromJson<String?>(json['topic']),
-      name: serializer.fromJson<String>(json['name']),
-      lastMessage: serializer.fromJson<String?>(json['lastMessage']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'roomId': serializer.toJson<int>(roomId),
-      'updatedAt': serializer.toJson<String>(updatedAt),
-      'topic': serializer.toJson<String?>(topic),
-      'name': serializer.toJson<String>(name),
-      'lastMessage': serializer.toJson<String?>(lastMessage),
-    };
-  }
-
-  Room copyWith(
-          {int? roomId,
-          String? updatedAt,
-          Value<String?> topic = const Value.absent(),
-          String? name,
-          Value<String?> lastMessage = const Value.absent()}) =>
-      Room(
-        roomId: roomId ?? this.roomId,
-        updatedAt: updatedAt ?? this.updatedAt,
-        topic: topic.present ? topic.value : this.topic,
-        name: name ?? this.name,
-        lastMessage: lastMessage.present ? lastMessage.value : this.lastMessage,
-      );
-  @override
-  String toString() {
-    return (StringBuffer('Room(')
-          ..write('roomId: $roomId, ')
-          ..write('updatedAt: $updatedAt, ')
-          ..write('topic: $topic, ')
-          ..write('name: $name, ')
-          ..write('lastMessage: $lastMessage')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(roomId, updatedAt, topic, name, lastMessage);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is Room &&
-          other.roomId == this.roomId &&
-          other.updatedAt == this.updatedAt &&
-          other.topic == this.topic &&
-          other.name == this.name &&
-          other.lastMessage == this.lastMessage);
-}
-
-class RoomsCompanion extends UpdateCompanion<Room> {
-  final Value<int> roomId;
-  final Value<String> updatedAt;
-  final Value<String?> topic;
-  final Value<String> name;
-  final Value<String?> lastMessage;
-  const RoomsCompanion({
-    this.roomId = const Value.absent(),
-    this.updatedAt = const Value.absent(),
-    this.topic = const Value.absent(),
-    this.name = const Value.absent(),
-    this.lastMessage = const Value.absent(),
-  });
-  RoomsCompanion.insert({
-    this.roomId = const Value.absent(),
-    required String updatedAt,
-    this.topic = const Value.absent(),
-    required String name,
-    this.lastMessage = const Value.absent(),
-  })  : updatedAt = Value(updatedAt),
-        name = Value(name);
-  static Insertable<Room> custom({
-    Expression<int>? roomId,
-    Expression<String>? updatedAt,
-    Expression<String>? topic,
-    Expression<String>? name,
-    Expression<String>? lastMessage,
-  }) {
-    return RawValuesInsertable({
-      if (roomId != null) 'room_id': roomId,
-      if (updatedAt != null) 'updated_at': updatedAt,
-      if (topic != null) 'topic': topic,
-      if (name != null) 'name': name,
-      if (lastMessage != null) 'last_message': lastMessage,
-    });
-  }
-
-  RoomsCompanion copyWith(
-      {Value<int>? roomId,
-      Value<String>? updatedAt,
-      Value<String?>? topic,
-      Value<String>? name,
-      Value<String?>? lastMessage}) {
-    return RoomsCompanion(
-      roomId: roomId ?? this.roomId,
-      updatedAt: updatedAt ?? this.updatedAt,
-      topic: topic ?? this.topic,
-      name: name ?? this.name,
-      lastMessage: lastMessage ?? this.lastMessage,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (roomId.present) {
-      map['room_id'] = Variable<int>(roomId.value);
-    }
-    if (updatedAt.present) {
-      map['updated_at'] = Variable<String>(updatedAt.value);
-    }
-    if (topic.present) {
-      map['topic'] = Variable<String>(topic.value);
-    }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
-    }
-    if (lastMessage.present) {
-      map['last_message'] = Variable<String>(lastMessage.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('RoomsCompanion(')
-          ..write('roomId: $roomId, ')
-          ..write('updatedAt: $updatedAt, ')
-          ..write('topic: $topic, ')
-          ..write('name: $name, ')
-          ..write('lastMessage: $lastMessage')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $UserCharactersTable extends UserCharacters
     with TableInfo<$UserCharactersTable, UserCharacter> {
   @override
@@ -1901,11 +1903,11 @@ class UserPermissionsCompanion extends UpdateCompanion<UserPermission> {
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   late final $AccountsTable accounts = $AccountsTable(this);
+  late final $RoomsTable rooms = $RoomsTable(this);
   late final $MessagesTable messages = $MessagesTable(this);
   late final $PermissionsTable permissions = $PermissionsTable(this);
   late final $RoomParticipantsTable roomParticipants =
       $RoomParticipantsTable(this);
-  late final $RoomsTable rooms = $RoomsTable(this);
   late final $UserCharactersTable userCharacters = $UserCharactersTable(this);
   late final $UserPermissionsTable userPermissions =
       $UserPermissionsTable(this);
@@ -1925,10 +1927,10 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
         accounts,
+        rooms,
         messages,
         permissions,
         roomParticipants,
-        rooms,
         userCharacters,
         userPermissions
       ];

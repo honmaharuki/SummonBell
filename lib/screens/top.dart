@@ -10,6 +10,7 @@ import 'package:summon_bell/database/dao/permissions_dao.dart';
 import 'package:summon_bell/database/database.dart';
 
 import 'package:summon_bell/models/top_model.dart';
+import 'package:summon_bell/state/chat_messages_state.dart';
 import 'package:summon_bell/state/database_provider.dart';
 
 // TopModel's Provider
@@ -23,18 +24,17 @@ class TopWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final _model = ref.watch(topModelProvider);
     final database = ref.watch(databaseProvider);
-    final messages = useState<List<types.Message>>([]);
 
     return Scaffold(
       backgroundColor: const Color(0xFFEAEDF0),
       appBar: BaseAppBar(),
-      body: _buildBody(context, messages, database),
+      body: _buildBody(context, database, ref),
       drawer: BaseDrawer(),
     );
   }
 
-  SafeArea _buildBody(BuildContext context,
-      ValueNotifier<List<types.Message>> messages, AppDatabase database) {
+  SafeArea _buildBody(
+      BuildContext context, AppDatabase database, WidgetRef ref) {
     return SafeArea(
       top: true,
       child: SingleChildScrollView(
@@ -45,7 +45,13 @@ class TopWidget extends HookConsumerWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 BaseImage(),
-                ChatSection(messages: messages),
+                ChatSection(roomId: 1),
+                ElevatedButton(
+                  onPressed: () {
+                    ref.read(selectRoomProvider.notifier).addRoomId(1);
+                  },
+                  child: Text('set room id'),
+                ),
                 ElevatedButton(
                   onPressed: () {
                     maindb(database); // ボタンが押されたときに実行するメソッド
