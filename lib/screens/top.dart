@@ -6,8 +6,12 @@ import 'package:summon_bell/components/base_app_bar.dart';
 import 'package:summon_bell/components/base_chat.dart';
 import 'package:summon_bell/components/base_drawer.dart';
 import 'package:summon_bell/components/base_image.dart';
+import 'package:summon_bell/database/dao/permissions_dao.dart';
+import 'package:summon_bell/database/database.dart';
 
 import 'package:summon_bell/models/top_model.dart';
+import 'package:summon_bell/state/chat_messages_state.dart';
+import 'package:summon_bell/state/database_provider.dart';
 
 // TopModel's Provider
 final topModelProvider = Provider(
@@ -19,18 +23,18 @@ class TopWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _model = ref.watch(topModelProvider);
-    final messages = useState<List<types.Message>>([]);
+    final database = ref.watch(databaseProvider);
 
     return Scaffold(
       backgroundColor: const Color(0xFFEAEDF0),
       appBar: BaseAppBar(),
-      body: _buildBody(context, messages),
+      body: _buildBody(context, database, ref),
       drawer: BaseDrawer(),
     );
   }
 
   SafeArea _buildBody(
-      BuildContext context, ValueNotifier<List<types.Message>> messages) {
+      BuildContext context, AppDatabase database, WidgetRef ref) {
     return SafeArea(
       top: true,
       child: SingleChildScrollView(
@@ -41,12 +45,33 @@ class TopWidget extends HookConsumerWidget {
               mainAxisSize: MainAxisSize.max,
               children: [
                 BaseImage(),
-                ChatSection(messages: messages),
+                ChatSection(roomId: 1),
+                ElevatedButton(
+                  onPressed: () {
+                    ref.read(selectRoomProvider.notifier).addRoomId(1);
+                  },
+                  child: Text('set room id'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    maindb(database); // ボタンが押されたときに実行するメソッド
+                  },
+                  child: Text('DB Test Start'),
+                ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Future<void> maindb(AppDatabase database) async {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    await database.permissionDao.insertPermission();
+
+    final allPermissions = await database.permissionDao.getAllPermissions();
+    print('allPermissions: $allPermissions');
   }
 }
