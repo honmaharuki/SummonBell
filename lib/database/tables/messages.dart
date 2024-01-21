@@ -8,5 +8,6 @@ class Messages extends Table {
   IntColumn get roomId => integer().references(Rooms, #roomId)();
   TextColumn get msg => text()();
   IntColumn get accountId => integer().references(Accounts, #accountId)();
-  IntColumn get updatedAt => integer()();
+  IntColumn get createdAt => integer().nullable()();
+  IntColumn get updatedAt => integer().nullable()();
 }

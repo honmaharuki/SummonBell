@@ -51,12 +51,12 @@ class MessageDao extends DatabaseAccessor<AppDatabase> with _$MessageDaoMixin {
 
   //TODO 引数名直す 登録する値も直す
   Future<void> insertTextMessage(
-      int roomId, int accountId, String message, int updatedAt) async {
+      int roomId, int accountId, String message, int createdAt) async {
     await into(messages).insert(MessagesCompanion.insert(
       roomId: roomId,
       accountId: accountId,
       msg: message,
-      updatedAt: updatedAt,
+      createdAt: Value(createdAt),
     ));
   }
   /* TODO あとで下記やるwatchで自動値出力

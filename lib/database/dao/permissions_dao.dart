@@ -18,10 +18,10 @@ class PermissionDao extends DatabaseAccessor<AppDatabase>
 
   Future<void> insertPermission() async {
     await into(permissions).insert(PermissionsCompanion.insert(
-      updatedAt: 'test',
-      roles: 'test',
-      level: 'test',
-    ));
+        updatedAt: const Value(1),
+        roles: 'test',
+        level: 'test',
+        createdAt: const Value(1)));
   }
   /*MEMO 下記のように呼び出す側で、databeseインスタんを使って呼び出すことも可能ではあるが控えてもらいたい。
       await database

@@ -46,6 +46,8 @@ class AppDatabase extends _$AppDatabase {
 
   @override
   int get schemaVersion => 1; // スキーマバージョン
+  //TODO バージョンごとのマイグレーション管理について https://drift.simonbinder.eu/docs/advanced-features/migrations/#step-by-step
+  //TODO 開発中の場合のDBリセットについて https://drift.simonbinder.eu/docs/advanced-features/migrations/#during-development
   //NOTE Future<List<Room>> getAllUsers() => select(rooms).get(); Daoを使わずにdatabase.dartに直接記載も可能 https://drift.simonbinder.eu/docs/dart-api/select/#simple-selects
 }
 
@@ -72,5 +74,6 @@ LazyDatabase _openConnection() {
     sqlite3.tempDirectory = cachebase;
 
     return NativeDatabase.createInBackground(file); // バックグラウンドでネイティブデータベースを作成
+    // MEMO final db = NativeDatabase(..., logStatements: true); このように直せば実行されるSQLを確認できます。
   });
 }
